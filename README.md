@@ -25,7 +25,8 @@ file in `docker-compose.yaml`.
 Execute the setup with `docker-compose up -d`.
 
 ## Run the Application
-This project ships with a kafka producer, consumer and a streams app.
+This project ships with a kafka producer, consumer and a streams app. Producer and consumer are based on the step-by-step
+guide "Getting Started with Apache Kafka and Python" (https://developer.confluent.io/get-started/python).
 
 Deployment steps are the following:
 * start the faust worker: `faust -A purchase_stream worker -l info`
