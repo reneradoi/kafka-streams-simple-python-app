@@ -9,7 +9,7 @@
 ### Source Code
 Clone this repo to your favorite directory and change to there:
 ```
-git clone ...
+git clone https://codehub.sva.de/Rene.Radoi/kafka-streams-simple-python-app.git
 cd kafka-streams-simple-python-app
 ```
 
