@@ -30,13 +30,9 @@ guide "Getting Started with Apache Kafka and Python" (https://developer.confluen
 
 Deployment steps are the following:
 * start the faust worker: `faust -A purchase_stream worker -l info`
-* start the kafka consumer (to check message production): `python3 consumer.py kafka_client_config.ini`
 * start the kafka producer (will create 10 new messages): `python3 producer.py kafka_client_config.ini`
 
-## Review Streaming Results
-Now you can have a look at the output of the Kafka Stream (which is a table) and review the counted results.
-
-Connect to your Kafka Container:
+In order to review your streaming results, connect to the Kafka Container and have a look at corresponding topic.
 ```
 $ docker ps
 CONTAINER ID   IMAGE                                 COMMAND                  CREATED          STATUS          PORTS                                            NAMES
@@ -50,29 +46,38 @@ List the topic content of the count_users table:
 $ /bin/kafka-console-consumer --bootstrap-server localhost:9092 --property print.key=True --topic purchases-count_users-changelog --from-beginning
 "jbernard"      1
 "jbernard"      2
-"htanaka"       1
-"jsmith"        1
-"jsmith"        2
-"eabara"        1
-"awalther"      1
-"awalther"      2
-"eabara"        2
-"awalther"      3
-Processed a total of 10 messages
+[...]
 ```
 
-List the topic content of the count_products table:
+### Use Case 1: Aggregate
+`faust -A purchase_stream worker -l info`
+
+Result: Counts the amount of purchases each user makes: 
+
+### Use Case 2: Filter Data
+`faust -A filtered_stream worker -l info`
+
+Result: Only purchases for books or batteries will be shown.
 ```
-$ /bin/kafka-console-consumer --bootstrap-server localhost:9092 --property print.key=True --topic purchases-count_purchases-changelog --from-beginning
-"batteries"     1
-"book"  1
-"gift card"     1
-"alarm clock"   1
-"alarm clock"   2
-"alarm clock"   3
-"t-shirts"      1
-"alarm clock"   4
-"alarm clock"   5
-"alarm clock"   6
-Processed a total of 10 messages
+$ /bin/kafka-console-consumer --bootstrap-server localhost:9092 --topic filtered_purchases
+{"user": "eabara", "product": "batteries", "__faust": {"ns": "filtered_stream.Purchase"}}
+{"user": "eabara", "product": "batteries", "__faust": {"ns": "filtered_stream.Purchase"}}
+{"user": "jsmith", "product": "batteries", "__faust": {"ns": "filtered_stream.Purchase"}}
+[...]
+```
+
+### Use Case 3: Join Information
+`faust -A joint_stream worker -l info`
+
+Result: The topic will show all purchases with the total amount for this product since start of producing messages
+```
+$ /bin/kafka-console-consumer --bootstrap-server localhost:9092 --topic joint_purchases
+"user: eabara, product: batteries, amount: 16504"
+"user: jbernard, product: t-shirts, amount: 16506"
+"user: htanaka, product: batteries, amount: 16505"
+"user: jsmith, product: batteries, amount: 16506"
+"user: jsmith, product: alarm clock, amount: 16621"
+"user: sgarcia, product: alarm clock, amount: 16622"
+"user: htanaka, product: gift card, amount: 16398"
+[...]
 ```
