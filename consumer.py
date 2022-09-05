@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
-import sys
 from argparse import ArgumentParser, FileType
 from configparser import ConfigParser
+
 from confluent_kafka import Consumer, OFFSET_BEGINNING
 
 if __name__ == '__main__':
@@ -22,12 +22,14 @@ if __name__ == '__main__':
     # Create Consumer instance
     consumer = Consumer(config)
 
+
     # Set up a callback to handle the '--reset' flag.
     def reset_offset(consumer, partitions):
         if args.reset:
             for p in partitions:
                 p.offset = OFFSET_BEGINNING
             consumer.assign(partitions)
+
 
     # Subscribe to topic
     topic = "purchases"

@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 
-from random import choice
+import json
 from argparse import ArgumentParser, FileType
 from configparser import ConfigParser
-from confluent_kafka import Producer
+from random import choice
 from time import sleep
-import json
+
+from confluent_kafka import Producer
 
 if __name__ == '__main__':
     # Parse the command line.
@@ -22,6 +23,7 @@ if __name__ == '__main__':
     # Create Producer instance
     producer = Producer(config)
 
+
     # Optional per-message delivery callback (triggered by poll() or flush())
     # when a message has been successfully delivered or permanently
     # failed delivery (after retries).
@@ -31,6 +33,7 @@ if __name__ == '__main__':
         else:
             print("Produced event to topic {topic}: key = {key:12} value = {value:12}".format(
                 topic=msg.topic(), key=msg.key().decode('utf-8'), value=msg.value().decode('utf-8')))
+
 
     # Produce data by selecting random values from these lists.
     topic = "purchases"
@@ -44,6 +47,7 @@ if __name__ == '__main__':
         # changed it to synchronous producer (no more callback method, flush() at each message)
         producer.produce(topic, json.dumps({"user": user_id, "product": product}), user_id)
         producer.flush()
+        print(f"produced message with user: {user_id}, product: {product}")
         count += 1
         sleep(2.0)
 
