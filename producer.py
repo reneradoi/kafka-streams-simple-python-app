@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
-import sys
 from random import choice
 from argparse import ArgumentParser, FileType
 from configparser import ConfigParser
 from confluent_kafka import Producer
+from time import sleep
 import json
 
 if __name__ == '__main__':
@@ -38,14 +38,14 @@ if __name__ == '__main__':
     products = ['book', 'alarm clock', 't-shirts', 'gift card', 'batteries']
 
     count = 0
-    for _ in range(10):
-
+    while True:
         user_id = choice(user_ids)
         product = choice(products)
         # changed it to synchronous producer (no more callback method, flush() at each message)
         producer.produce(topic, json.dumps({"user": user_id, "product": product}), user_id)
         producer.flush()
         count += 1
+        sleep(2.0)
 
     # Block until the messages are sent.
     # producer.poll(10000)
