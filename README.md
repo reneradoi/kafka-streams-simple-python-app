@@ -30,7 +30,16 @@ guide "Getting Started with Apache Kafka and Python" (https://developer.confluen
 
 Deployment steps are the following:
 * start the faust worker: `faust -A purchase_stream worker -l info`
-* start the kafka producer (will create 10 new messages): `python3 producer.py kafka_client_config.ini`
+* start the kafka producer (will create a new message every two seconds): 
+```
+$ python3 producer.py kafka_client_config.ini
+produced message with user: eabara, product: t-shirts
+produced message with user: awalther, product: gift card
+produced message with user: sgarcia, product: alarm clock
+produced message with user: eabara, product: book
+produced message with user: sgarcia, product: t-shirts
+produced message with user: jbernard, product: batteries
+```
 
 In order to review your streaming results, connect to the Kafka Container and have a look at corresponding topic.
 ```
@@ -52,7 +61,21 @@ $ /bin/kafka-console-consumer --bootstrap-server localhost:9092 --property print
 ### Use Case 1: Aggregate
 `faust -A purchase_stream worker -l info`
 
-Result: Counts the amount of purchases each user makes: 
+Result: Counts the amount of purchases each user makes:
+```
+$ /bin/kafka-console-consumer --bootstrap-server localhost:9092 --topic filtered_purchases
+"awalther"      2102
+"jbernard"      2041
+"awalther"      2103
+"htanaka"       2070
+"awalther"      2104
+"jbernard"      2042
+"awalther"      2105
+"jbernard"      2043
+"awalther"      2106
+"htanaka"       2071
+[...]
+```
 
 ### Use Case 2: Filter Data
 `faust -A filtered_stream worker -l info`
