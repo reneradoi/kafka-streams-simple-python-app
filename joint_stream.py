@@ -17,7 +17,7 @@ join_topic = app.topic('joint_purchases')
 
 
 @app.agent(purchase_topic)
-async def agg_purchases(purchases):
+async def join(purchases):
     async for purchase in purchases:
         if purchase.product in product_counter.keys():
             await join_topic.send(
