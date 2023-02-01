@@ -63,7 +63,7 @@ $ /bin/kafka-console-consumer --bootstrap-server localhost:9092 --property print
 
 Result: Counts the amount of purchases each user makes:
 ```
-$ /bin/kafka-console-consumer --bootstrap-server localhost:9092 --topic filtered_purchases
+$ /bin/kafka-console-consumer --bootstrap-server localhost:9092 --property print.key=True --topic purchases-count_users-changelog
 "awalther"      2102
 "jbernard"      2041
 "awalther"      2103
