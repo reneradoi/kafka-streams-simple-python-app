@@ -23,7 +23,6 @@ if __name__ == '__main__':
     # Create Producer instance
     producer = Producer(config)
 
-
     # Optional per-message delivery callback (triggered by poll() or flush())
     # when a message has been successfully delivered or permanently
     # failed delivery (after retries).
@@ -40,7 +39,6 @@ if __name__ == '__main__':
     user_ids = ['eabara', 'jsmith', 'sgarcia', 'jbernard', 'htanaka', 'awalther']
     products = ['book', 'alarm clock', 't-shirts', 'gift card', 'batteries']
 
-    count = 0
     while True:
         user_id = choice(user_ids)
         product = choice(products)
@@ -48,8 +46,7 @@ if __name__ == '__main__':
         producer.produce(topic, json.dumps({"user": user_id, "product": product}), user_id)
         producer.flush()
         print(f"produced message with user: {user_id}, product: {product}")
-        count += 1
-        sleep(2.0)
+        sleep(.5)
 
     # Block until the messages are sent.
     # producer.poll(10000)
