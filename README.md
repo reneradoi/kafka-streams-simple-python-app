@@ -2,7 +2,7 @@
 
 ## Setup
 ### Prerequisites
-- Linux, e.g. Ubuntu in WSL2
+- Linux, e.g. Ubuntu
 - Python 3.7+
 - docker, docker-compose
 
@@ -11,6 +11,12 @@ Clone this repo to your favorite directory and change to there:
 ```
 git clone [repo url]
 cd kafka-streams-simple-python-app
+```
+
+Create and activate a virtual environment:
+```
+python3 -m venv .venv
+source .venv/bin/activate
 ```
 
 Install the required packages:
@@ -22,7 +28,7 @@ pip install -r requirements
 A minimal Kafka cluster, consisting of Zookeeper and a standalone Kafka Broker, can be created with the docker compose 
 file in `docker-compose.yaml`. 
 
-Execute the setup with `docker-compose up -d`.
+Execute the setup with `docker compose up -d`.
 
 ## Run the Application
 This project ships with a kafka producer, consumer and a streams app. Producer and consumer are based on the step-by-step
